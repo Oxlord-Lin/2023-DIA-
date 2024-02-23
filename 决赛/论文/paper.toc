@@ -1,0 +1,11 @@
+\contentsline {section}{\numberline {1}问题一：重估样本量}{1}{section.1}%
+\contentsline {subsection}{\numberline {1.1}背景}{1}{subsection.1.1}%
+\contentsline {subsection}{\numberline {1.2}方法}{1}{subsection.1.2}%
+\contentsline {paragraph}{样本量估计}{1}{section*.2}%
+\contentsline {paragraph}{考虑期中分析一类错误矫正的样本量重估}{2}{section*.3}%
+\contentsline {section}{\numberline {2}问题二：按CMH统计分析方法计算总体样本量}{2}{section.2}%
+\contentsline {section}{\numberline {3}问题三：利用广义线性模型求出相对风险的点估计与置信区间}{3}{section.3}%
+\contentsline {section}{\numberline {4}问题四：附件数据异常挖掘——辛普森悖论现象}{5}{section.4}%
+\contentsline {section}{\numberline {5}问题五：基于模拟求出满足一致性条件的最小样本量}{6}{section.5}%
+\contentsline {subsection}{\numberline {5.1}Python codes}{6}{subsection.5.1}%
+\contentsline {subsection}{\numberline {5.2}程序简介与模拟结果}{7}{subsection.5.2}%

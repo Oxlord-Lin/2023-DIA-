@@ -1,0 +1,56 @@
+This is BibTeX, Version 0.99d (TeX Live 2022)
+Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
+The top-level auxiliary file: 附件1.aux
+The style file: plain.bst
+Database file #1: ref.bib
+I was expecting a `,' or a `}'---line 47 of file ref.bib
+ : @mastersthesis{吴宇玲 
+ :                          2021 调肠克敏方治疗IBS--D的临床试验和期中分析,
+I'm skipping whatever remains of this entry
+I was expecting a `,' or a `}'---line 65 of file ref.bib
+ : @mastersthesis{桂宏宇 
+ :                          2014 临床试验中的样本含量再估算及其软件实现,
+I'm skipping whatever remains of this entry
+Warning--there's a number but no volume in 陈建平2010期中分析的条件把握度及样本含量再估计
+You've used 1 entry,
+            2118 wiz_defined-function locations,
+            502 strings with 4178 characters,
+and the built_in function-call counts, 350 in all, are:
+= -- 29
+> -- 23
+< -- 0
++ -- 9
+- -- 8
+* -- 31
+:= -- 69
+add.period$ -- 3
+call.type$ -- 1
+change.case$ -- 7
+chr.to.int$ -- 0
+cite$ -- 2
+duplicate$ -- 11
+empty$ -- 22
+format.name$ -- 8
+if$ -- 65
+int.to.chr$ -- 0
+int.to.str$ -- 1
+missing$ -- 1
+newline$ -- 8
+num.names$ -- 2
+pop$ -- 6
+preamble$ -- 1
+purify$ -- 6
+quote$ -- 0
+skip$ -- 5
+stack$ -- 0
+substring$ -- 8
+swap$ -- 1
+text.length$ -- 0
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 4
+warning$ -- 1
+while$ -- 3
+width$ -- 2
+write$ -- 13
+(There were 2 error messages)

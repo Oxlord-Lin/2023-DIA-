@@ -1,0 +1,284 @@
+\documentclass{article}
+\usepackage[UTF8]{ctex}
+% Replace `letterpaper' with`a4paper' for UK/EU standard size
+\usepackage[a4paper,top=2cm,bottom=2cm,left=3cm,right=3cm,marginparwidth=1.75cm]{geometry}
+
+% Useful packages
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage[colorlinks=true, allcolors=blue]{hyperref}
+\usepackage{graphicx} %插入图片的宏包
+\usepackage{float} %设置图片浮动位置的宏包
+\usepackage{subfigure} %插入多图时用子图显示的宏包
+\usepackage{parskip}
+\usepackage{indentfirst} 
+\setlength{\parindent}{2em}
+\usepackage{hyperref}  
+\usepackage{tikz}
+\allowdisplaybreaks
+\usepackage{multirow}
+\usepackage{amsmath}
+\usepackage{bookmark}
+\usepackage{amsfonts,amssymb} 
+\usepackage{xcolor} % 用于显示颜色
+\usepackage{listings} % 用于插入代码
+\usepackage{tikz} % 导入多重比较示意图专用
+\usetikzlibrary{decorations,arrows,shapes} % 导入多重比较示意图专用
+
+\lstset{
+	basicstyle          =   \sffamily,          % 基本代码风格
+	keywordstyle        =   \bfseries,          % 关键字风格
+	commentstyle        =   \rmfamily\itshape,  % 注释的风格，斜体
+	stringstyle         =   \ttfamily,  % 字符串风格
+	flexiblecolumns,                % 别问为什么，加上这个
+	numbers             =   left,   % 行号的位置在左边
+	showspaces          =   false,  % 是否显示空格，显示了有点乱，所以不现实了
+	numberstyle         =   \zihao{-5}\ttfamily,    % 行号的样式，小五号，tt等宽字体
+	showstringspaces    =   false,
+	captionpos          =   t,      % 这段代码的名字所呈现的位置，t指的是top上面
+	frame               =   lrtb,   % 显示边框
+}
+
+\lstdefinestyle{R}{
+	language        =   R, % 语言选R
+	basicstyle      =   \zihao{-5}\ttfamily,
+	numberstyle     =   \zihao{-5}\ttfamily,
+	keywordstyle    =   \color{blue},
+	keywordstyle    =   [2] \color{teal},
+	stringstyle     =   \color{magenta},
+	commentstyle    =   \color{red}\ttfamily,
+	breaklines      =   true,   % 自动换行，建议不要写太长的行
+	columns         =   fixed,  % 如果不加这一句，字间距就不固定，很丑，必须加
+	basewidth       =   0.5em,
+}
+
+\lstdefinestyle{Python}{
+	language        =   Python, % 语言选R
+	basicstyle      =   \zihao{-5}\ttfamily,
+	numberstyle     =   \zihao{-5}\ttfamily,
+	keywordstyle    =   \color{blue},
+	keywordstyle    =   [2] \color{teal},
+	stringstyle     =   \color{magenta},
+	commentstyle    =   \color{red}\ttfamily,
+	breaklines      =   true,   % 自动换行，建议不要写太长的行
+	columns         =   fixed,  % 如果不加这一句，字间距就不固定，很丑，必须加
+	basewidth       =   0.5em,
+}
+
+\title{DIA决赛报告：基于中心极限定理、CMH、广义线性模型、模拟实验等统计学方法的临床三期实验数据分析报告}
+\author{}
+\date{}
+
+\begin{document}
+	\maketitle
+	\tableofcontents
+
+\section{问题一：重估样本量}
+\subsection{背景}
+在本研究中，我们希望评估研究药物相比于安慰剂在某疾病患者人群中的治疗有效性和安全性。
+\subsection{方法}
+在以下讨论中，我们仅考虑平衡设计，即两组样本量相等情况。
+\paragraph{样本量估计}
+原假设和备择假设分别为：
+\begin{align*}
+    &H_0: \, p_1 - p_0 = 0\\
+    &H_1: \,p_1 - p_0 > 0
+\end{align*}
+
+设单侧检验一类错误概率为$\alpha=0.025$，二类错误概率为$\beta=0.05$，
+药物组$\pi_1=0.40$，安慰剂组$\pi_0=0.25$，设n为样本量（即药物组和安慰剂组人数之和）。
+
+为了计算所需的样本量，基于中心极限定理，
+可以使用正态分布来近似估算两独立比例之差。基于以下公式：
+\[n = 2 \left(\frac{Z_{\alpha} + Z_{\beta}}{\delta}\right)^2 
+	\times \left(p_1(1-p_1) + p_2(1-p_2)\right)
+\]
+其中：
+\begin{itemize}
+    \item \(Z_{\alpha}\) = 1.96，对应于单侧0.025的z值。
+    \item \(Z_{\beta}\) = 1.28，对应于90\%的把握度。
+    \item \(\delta\) = 0.15，校正后的应答率的差异。
+    \item \(p_1\) = 0.40，试验药物组的应答率。
+    \item \(p_2\) = 0.25，安慰剂组的应答率。
+\end{itemize}
+代入上述值，我们计算得到\textbf{第二阶段还需要的样本量}为199.4
+\begin{align*}
+    n &= 2\frac{(1.96+1.28)^2}{(0.15)^2}\left[ (0.4(1-0.4)) + 0.25(1-0.25) \right]\\
+      &= 199.45
+\end{align*}
+，向上取整得到\textbf{第二阶段还需要的样本量为}200。
+
+\paragraph{考虑期中分析一类错误矫正的样本量重估}
+现在，我们考虑期中分析带来的第一类错误膨胀的问题。由于题目中没有具体给出信息时间，
+我们假设信息时间为$t$，我们选用较为保守的O'Brien-Fleming消耗函数，
+则在期中分析的时候，取校正后的显著性水平$\alpha'= 1-\Phi(\frac{Z_{1-0.025}}{\sqrt{t}})$，剩余
+的计算步骤与上文相同，这里不再赘述。
+
+
+
+
+
+\section{问题二：按CMH统计分析方法计算总体样本量}
+在这个问题中，我们需要使用Cochran-Mantel-Haenszel（CMH）方法来考虑各地区的差异。
+首先，我们计算每个地区的效应大小和差异：
+
+每个地区的差异：
+\begin{align*}
+\text{亚洲:} \quad \delta_{\text{Asia}} &= 53\% - 35\% = 18\% \\
+\text{欧洲:} \quad \delta_{\text{Europe}} &= 54\% - 27\% = 27\% \\
+\text{美洲:} \quad \delta_{\text{America}} &= 50\% - 25\% = 25\%
+\end{align*}
+
+使用地区权重来计算总的预期差异：
+\[\delta = 0.50 \times 18\% + 0.20 \times 27\% + 0.30 \times 25\% = 21.9\%
+\]
+
+使用总的预期差异，我们现在可以得到单组的样本量计算公式，如下所示：
+
+\begin{align*}
+n = \left(\frac{Z_\alpha + Z_\beta}{\delta}\right)^2 \cdot \left(p_1(1-p_1) + p_2(1-p_2)\right)
+\end{align*}
+
+其中：
+$Z_\alpha$ 是对应于I类错误率的z值，即1.96（单侧0.025）。
+$Z_\beta$ 是对应于II类错误率的z值，即1.645（为了达到$95\%$的把握度或5$\%$的II类错误率）。
+$\delta$ 是预期的应答率差异，即21.9$\%$。
+$p_1$ 是整体的预期研究药物组应答率。
+$p_2$ 是整体的预期安慰剂组应答率。
+
+首先，我们需要计算$p_1$和$p_2$的方差。考虑到应答率，我们有：
+\[
+p_1 = 52.3\%, \quad p_2 = 30.4\%
+\]
+
+方差为：
+\[
+\text{var}(p_1) = p_1(1-p_1) = 0.523 \times 0.477 = 0.2494
+\]
+\[
+\text{var}(p_2) = p_2(1-p_2) = 0.304 \times 0.696 = 0.2114
+\]
+
+代入上述公式，我们得到：
+\[
+n = \left(\frac{1.96 + 1.645}{0.219}\right)^2 \cdot (0.2494 + 0.2114) = 125.5
+\]
+
+计算后，向上取整得到每组大约需要126名受试者。因此，总体需要的样本量为252名受试者。
+
+
+
+
+
+
+% =================================================
+\section{问题三：利用广义线性模型求出相对风险的点估计与置信区间}
+相对风险的定义为
+\[RR = \frac{p_1}{p_2}\]
+其中$p_1$是药物组的应答率，$p_2$是安慰剂组的应答率。
+注意，由于这里的$p$是应答率，因此，\textbf{在本模型中，当相对风险$RR$大于1时，
+我们认为药物组比安慰剂组应答率更高。}
+
+在不考虑交互效应的前提下，只考虑治疗组（药物和安慰剂组），分层因素（体重和区域），以及连续变量年龄
+我们将建立的泊松回归（属广义线性回归，用$\log(\cdot)$作为连接函数）模型为：
+\begin{align*}
+    \log(p) = \beta_0 + \beta_1 \times Treat + \beta_2 \times Weight + \beta_3 \times Europe + 
+    \beta_4 \times America + \beta_5 \times age
+\end{align*}
+我们利用R语言进行建模，得到的泊松回归结果如下：
+\lstinputlisting[style = R,
+caption={利用泊松回归计算相对风险},
+label = {pos},linerange={1-47}]{数据处理.R}
+
+由于我们对研究药物组和安慰剂组关于主要终点的相对风险RR感兴趣，
+则应该关注泊松回归模型中treat变量的系数$\beta_1$。
+从回归结果可以看出，$\log(RR)$的点估计为$\beta_1=\log(\hat{RR})=0.518174$，
+标准误为$se(\hat{RR}) = 0.230265$。
+
+相对风险$RR$的点估计为：
+\begin{align*}
+\exp(\hat{RR})&=\exp(0.518174)\\
+&=1.678959
+\end{align*}
+
+虽然$RR$不服从正态分布，但根据统计学知识，$\log(RR)$服从正态分布，那么，
+$\log(RR)$的$95\%$置信区间为：
+\begin{align*}
+CI' &= (   \log(\hat{RR})-1.96se(\hat{RR}), \log(\hat{RR})+1.96se(\hat{RR})) \\
+&=(0.518174-1.96\times0.230265, 0.518174+1.96\times0.230265)
+\end{align*}
+
+从而$RR$的$95\%$置信区间为：
+\begin{align*}
+CI &= (\exp(0.518174-1.96\times0.230265), \exp(0.518174+1.96\times0.230265))\\
+& = (1.069140,2.636608)
+\end{align*}
+
+注意到$RR$的$95\%$置信区间内不包含0，因此我们可以认为，我们可以在$5\%$的显著性水平下拒绝原假设，
+即我们可以认为，药物组的应答率确实高于安慰剂组，对于主要终点而言，药物组更加有效。
+
+
+% =================================================
+\section{问题四：附件数据异常挖掘——辛普森悖论现象}
+
+根据分析，我们认为“辛普森悖论”现象确实存在。我们将数据分为体重偏轻组和体重偏重组，
+分别对两个亚组的数据，以治疗组（药物和安慰剂组），分层因素（此时只考虑体重），以及连续变量年龄
+作为解释变量，同样建立与问题三类似的泊松回归模型，R代码以及回归结果如下：
+\lstinputlisting[style = R,
+caption={分别计算体重偏轻组和体重偏重组在药物组和安慰剂组变量上关于主要终点的相对风险},
+label = {pos},linerange={51-100}]{数据处理.R}
+
+类似的，对于体重偏重组，$RR$的$95\%$置信区间为：
+\begin{align*}
+CI &= (\exp(0.66076-1.96\times0.37294), \exp(0.66076+1.96\times0.37294))\\
+& = (0.932205,4.021771)
+\end{align*}
+
+对于体重偏轻组，$RR$的$95\%$置信区间为：
+\begin{align*}
+CI &= (\exp(0.43531-1.96\times0.29291), \exp(0.43531+1.96\times0.29291))\\
+& = (0.870407,14.705477)
+\end{align*}
+
+注意到，对于以上两个亚组，\textbf{$RR$的$95\%$置信区间都包含了1，也即按照$5\%$的显著性
+水平，不能拒绝原假设，也即无法得出药物组比安慰剂组的应答率更高的结论}。 但是，如问题三所述，
+在将两个体重的亚组数据合并之后，我们却拒绝了原假设，
+得到了药物组比安慰剂组的应答率更高的结论，这就是一个辛普森悖论现象的例子，提示我们在
+合并不同亚组的数据时，需要非常谨慎。
+
+
+\section{问题五：基于模拟求出满足一致性条件的最小样本量}
+\subsection{Python codes}
+\lstinputlisting[style = Python,
+caption={利用模拟方法计算满足一致性条件的该国最低样本量},
+label = {consist}]{第五题的模拟程序.py}
+\subsection{程序简介与模拟结果}
+我们定义，疗效观测值指：在样本中
+在我们的模拟程序中，一共有三个函数，分别是simulate-response，consistency-met，以及
+find-sample-size。其中，find-sample-size相当于一个接口。最核心的功能是simulate-response与
+consistency-met。simulate-response根据所输入的药物组和安慰剂组的应答率，分别返回服从二项分布的非负整数
+作为各组的应答人数，并且判断两组应答率是否具有统计学差异，将两组应答人数之和作为疗效观测值返回。
+consistency-met则判断在本次模拟中，当该国样本量为n时，且总的200名受试者
+关于终点显示出统计学差异的前提下，该国疗效观测值是否达到总观测值的一半。
+
+我们将每一轮的模拟次数调为10万，得到使得该一致性的概率至少为$80\%$的该国样本量为112。
+
+% \bibliographystyle{plain}
+% \bibliography{ref}
+
+% \section*{附录：正文与附录中均未包含的代码}
+
+
+% \lstinputlisting[style = R,
+% caption={临界点分析所使用的R代码},
+% label = {tpa}]{codes//tipping_point.R}
+
+
+\end{document}
+
+
+% \begin{figure}[H]
+%     \centering  %图片全局居中
+%     \includegraphics[width=0.8\textwidth]{result3}
+%     \caption{The heap after performing INCREASE-KEY(A, 10, 28)}
+% \end{figure}
